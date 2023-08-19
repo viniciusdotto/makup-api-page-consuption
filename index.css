@@ -1,0 +1,44 @@
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+#makeup-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+#makeup-list li{
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  padding: 1rem;
+  background-color: #ccc;
+  list-style-type: none;
+}
+
+.image-container {
+  margin: 0 auto;
+  width: 250px;
+  height: 250px;
+  overflow: hidden;
+}
+
+#makeup-list img{
+  width: 100%;
+}
+
+.p-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.p-container p {
+  padding: 0.25rem 0.5rem;
+  background-color: #888;
+}
+
+.p-container .price {
+  background-color: #88F;
+}

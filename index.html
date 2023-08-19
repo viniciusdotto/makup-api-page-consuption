@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Make Up Catalog</title>
+  </head>
+
+  <body>
+    <nav>
+      <label for="name">Nome</label>
+      <input name ="name" type="text" id="name">
+      <label for="brand">Marca</label>
+      <select name="brand" id="brand">
+        <option value=""></option>
+      </select>
+      <label for="type">Tipo</label>
+      <select name="type" id="type">
+        <option value=""></option>
+      </select>
+      <select name="filter" id="filter">
+        <option value="0" selected>Melhor Avaliados</option>
+        <option value="1">Menores Preços</option>
+        <option value="2">Maiores Preços</option>
+        <option value="3">A-Z</option>
+        <option value="4">Z-A</option>
+      </select>
+    </nav>
+    <div class="container">
+      <ul id="makeup-list">
+
+      </ul>
+    </div>
+
+    <script type="text/javascript" src="requisitions.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>
