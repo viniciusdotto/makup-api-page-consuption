@@ -7,10 +7,15 @@ const typeSelect = document.getElementById('type');
 const filter = document.getElementById('filter');
 const input = document.querySelector("input");
 
+// Obtenha os elementos necessários
+const modal = document.getElementById('myModal');
+const modalContent = document.querySelector('.modal-content');
+const closeBtn = document.querySelector('.close');
+
 async function init() {
   items = await listProducts();
-  sortByRating(); // Ordenar por rating ao inicializar
   getConstants();
+  sortByRating(); // Ordenar por rating ao inicializar
   renderData(items);
 }
 init();
@@ -18,8 +23,9 @@ init();
 function getConstants() {
   for (const item of items) {
     if (item.name === null) {item.name = ''};
-    if (item.rating === null) {item.rating = 0.0};
+    if (item.rating === null) { item.rating = 0.0 };
     if (item.price === null) {item.price = 0.0};
+    item.price = (parseFloat(item.price) * 5.5).toFixed(2);
     if (!brands.find(element => element === item.brand) && item.brand != null) {brands.push(item.brand)};
     if (!types.find(element => element === item.product_type) && item.product_type != null) {types.push(item.product_type)};
   }
@@ -95,6 +101,34 @@ function renderData(selectedItems) {
   }
   for (const item of selectedItems) {
     const li = document.createElement("li");
+    li.addEventListener('click', async function() {
+      const productId = this.querySelector('.product-id');
+      const product = await getProduct(productId.textContent);
+      product.price = (parseFloat(product.price) * 5.5).toFixed(2);
+      const modaImage = modal.querySelector('#modal-img');
+      const modalTitle = modal.querySelector('#modal-product-name');
+      const brandSubtitle = modal.querySelector('#brand-subtitle');
+      const priceSubtitle = modal.querySelector('#price-subtitle');
+      const brandDetails = modal.querySelector('#brand-details');
+      const priceDetails = modal.querySelector('#price-details');
+      const ratingDetails = modal.querySelector('#rating-details');
+      const categoryDetails = modal.querySelector('#category-details');
+      const typeDetails = modal.querySelector('#type-details');
+      modaImage.src = product.image_link;
+      modaImage.addEventListener('error', () => {
+        modaImage.src = 'https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg';
+      })
+      modalTitle.textContent = product.name;
+      brandSubtitle.textContent = product.brand;
+      priceSubtitle.textContent = `R$ ${product.price}`;
+      brandDetails.textContent = product.brand;
+      priceDetails.textContent = product.price;
+      ratingDetails.textContent = product.rating;
+      categoryDetails.textContent = product.category;
+      typeDetails.textContent = product.product_type;
+      modal.style.display = 'block';
+    });
+    const productId = document.createElement('span');
     const img = document.createElement("img");
     const imgContainer = document.createElement("div");
     const name = document.createElement("h2");
@@ -102,7 +136,9 @@ function renderData(selectedItems) {
     const brand = document.createElement("p");
     const price = document.createElement("p");
 
-    imgContainer.classList = 'image-container'
+    productId.classList = 'product-id';
+    productId.textContent = item.id;
+    imgContainer.classList = 'image-container';
     img.src = item.image_link;
     img.addEventListener('error', () => {
       img.src = 'https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg'
@@ -111,10 +147,11 @@ function renderData(selectedItems) {
     pContainer.classList = 'p-container'
     brand.textContent = item.brand;
     price.classList = 'price'
-    price.textContent = `R$ ${(parseFloat(item.price) * 5.5).toFixed(2)}`;
+    price.textContent = `R$ ${item.price}`;
 
     container.appendChild(li);
     li.appendChild(imgContainer);
+    li.appendChild(productId);
     imgContainer.appendChild(img);
     li.appendChild(name);
     li.appendChild(pContainer);
@@ -142,3 +179,15 @@ function withDelay(fn, delay) {
     timeout = setTimeout(fn, delay);
   };
 }
+
+// Feche a modal quando o botão '×' for clicado
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+// Feche a modal quando o usuário clicar fora da modal
+window.addEventListener('click', event => {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});

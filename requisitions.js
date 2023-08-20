@@ -18,6 +18,10 @@ function fetchJson(url, options) {
   function listProducts() {
     return fetchJson(baseUrl);
   }
+
+  function getProduct(id) {
+    return fetchJson(`http://makeup-api.herokuapp.com/api/v1/products/${id}.json`);
+  }
   
   function searchBrandOrType() {
     const selectedType = typeSelect.selectedOptions[0].value;
